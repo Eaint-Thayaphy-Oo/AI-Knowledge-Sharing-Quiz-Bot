@@ -1,14 +1,28 @@
-import React from "react";
-import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
-import Home from "../components/Home";
+import {
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
+import Layout from "../Layout";
+import Home from "@/pages/Home";
+import CategoryLayout from "@/pages/category/CategoryLayout";
+import { CategoryHome } from "@/pages/category/CategoryHome";
 
-const AppRouter = () => {
-  return (
-    <Router>
-      <Routes>
-        <Route path="home" element={<Home />}></Route>
-      </Routes>
-    </Router>
+const Router = () => {
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="category" element={<CategoryLayout />}>
+            <Route index element={<CategoryHome />} />
+          </Route>
+        </Route>
+      </>
+    )
   );
+  return <RouterProvider router={router} />;
 };
-export default AppRouter;
+
+export default Router;

@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 export default function Home() {
   return (
     <>
-      <div className="bg-red-400 flex flex-col justify-center h-screen text-center">
+      <div className="bg-indigo-950 flex flex-col justify-center h-screen text-center">
         <img
           src="/assets/images/logo.png"
           alt="logo"
