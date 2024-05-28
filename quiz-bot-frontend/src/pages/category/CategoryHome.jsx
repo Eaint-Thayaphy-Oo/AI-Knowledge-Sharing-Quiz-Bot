@@ -1,45 +1,37 @@
 import React from "react";
-import {
-  PieChart,
-  BriefcaseBusiness,
-  TrendingUp,
-  Heart,
-  Earth,
-  BookOpen,
-} from "lucide-react";
 
 export const CategoryHome = () => {
   const items = [
     {
-      icon: <PieChart color="#a1a1a1" />,
+      icon: <img src="/assets/images/rocket.png" />,
       label: "general knowledge",
     },
     {
-      icon: <BriefcaseBusiness color="#a1a1a1" />,
+      icon: <img src="/assets/images/science.png" />,
       label: "science",
     },
     {
-      icon: <TrendingUp color="#a1a1a1" />,
+      icon: <img src="/assets/images/IT.png" />,
       label: "IT",
     },
     {
-      icon: <Heart color="#a1a1a1" />,
+      icon: <img src="/assets/images/computer.png" />,
       label: "web development",
     },
     {
-      icon: <Earth color="#a1a1a1" />,
+      icon: <img src="/assets/images/medal.png" />,
       label: "history",
     },
     {
-      icon: <BookOpen color="#a1a1a1" />,
+      icon: <img src="/assets/images/music.png" />,
       label: "entertainment",
     },
     {
-      icon: <Earth color="#a1a1a1" />,
+      icon: <img src="/assets/images/target.png" />,
       label: "sports",
     },
     {
-      icon: <BookOpen color="#a1a1a1" />,
+      icon: <img src="/assets/images/setting.png" />,
       label: "education",
     },
   ];
@@ -57,7 +49,7 @@ export const CategoryHome = () => {
               key={index}
               className="bg-white p-8 w-72 rounded-[20px] mx-auto mb-10"
             >
-              <div className="-mt-10 ml-48">{item.icon}</div>
+              <div className="-mt-14 ml-48 w-20">{item.icon}</div>
               <p className="text-2xl font-semibold capitalize flex justify-center items-center pt-2">
                 {item.label}
               </p>

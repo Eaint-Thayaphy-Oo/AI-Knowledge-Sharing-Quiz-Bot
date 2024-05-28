@@ -6,11 +6,14 @@ import { ArrowRight } from "lucide-react";
 export default function Home() {
   return (
     <>
-      <div className="bg-indigo-950 flex flex-col justify-center h-screen text-center">
+      <div
+        className="flex flex-col justify-center h-screen text-center"
+        style={{ backgroundImage: "url('/assets/images/background.jpg')" }}
+      >
         <img
           src="/assets/images/logo.png"
           alt="logo"
-          className="mx-auto mb-10"
+          className="mx-auto mb-10 w-96"
         />
         <p className="text-xl font-bold text-white mb-20">
           Let's Play Some Quiz
