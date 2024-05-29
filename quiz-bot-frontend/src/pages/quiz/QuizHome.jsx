@@ -18,18 +18,18 @@ export const QuizHome = () => {
             <UserRound className="mx-auto" />
           </div>
         </div>
-        <div className="bg-white w-full rounded-t-lg">
-          <h1>5/30</h1>
-          <div className="bg-slate-100 shadow-lg w-96 rounded-full mx-auto p-5 mt-10">
+        <div className="bg-white w-full rounded-t-[50px] p-10">
+          <h1 className="text-end">5/30</h1>
+          <div className="bg-slate-100 drop-shadow-xl w-96 rounded-full mx-auto p-5 mt-10">
             Hyper Trainer Marking Language
           </div>
-          <div className="bg-slate-100 shadow-lg w-96 rounded-full mx-auto p-5 mt-10">
+          <div className="bg-slate-100 drop-shadow-xl w-96 rounded-full mx-auto p-5 mt-10">
             Hyper Trainer Marking Language
           </div>
-          <div className="bg-[#7CF979] shadow-lg w-96 rounded-full mx-auto p-5 mt-10">
+          <div className="bg-[#7CF979] drop-shadow-xl w-96 rounded-full mx-auto p-5 mt-10">
             Hyper Trainer Marking Language
           </div>
-          <div className="bg-slate-100 shadow-lg w-96 rounded-full mx-auto p-5 mt-10">
+          <div className="bg-slate-100 drop-shadow-xl w-96 rounded-full mx-auto p-5 mt-10">
             Hyper Trainer Marking Language
           </div>
         </div>

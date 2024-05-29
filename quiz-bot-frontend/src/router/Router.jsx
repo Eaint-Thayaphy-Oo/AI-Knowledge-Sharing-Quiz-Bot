@@ -10,6 +10,8 @@ import CategoryLayout from "@/pages/category/CategoryLayout";
 import { CategoryHome } from "@/pages/category/CategoryHome";
 import QuizLayout from "@/pages/quiz/QuizLayout";
 import { QuizHome } from "@/pages/quiz/QuizHome";
+import WinningScreenLayout from "@/pages/winningscreen/WinningScreenLayout";
+import { WinningScreenHome } from "@/pages/winningscreen/WinningScreenHome";
 
 const Router = () => {
   const router = createBrowserRouter(
@@ -22,6 +24,9 @@ const Router = () => {
           </Route>
           <Route path="quiz" element={<QuizLayout />}>
             <Route index element={<QuizHome />} />
+          </Route>
+          <Route path="winningscreen" element={<WinningScreenLayout />}>
+            <Route index element={<WinningScreenHome />} />
           </Route>
         </Route>
       </>

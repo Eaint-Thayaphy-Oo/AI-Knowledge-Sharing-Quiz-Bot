@@ -26,7 +26,7 @@ export default function Home() {
           <Input placeholder="Enter Room ID" className="w-36 mx-auto" />
           <Button
             variant="outline"
-            className="w-36 p-6 flex font-bold rounded-full -mb-8 mt-14 ml-20 bg-[#59F8E8]"
+            className="w-36 p-6 flex font-bold rounded-full -mb-8 mt-14 ml-20 bg-[#59F8E8]  drop-shadow-[0px_2px_5px_rgba(225,225,225)]"
           >
             Next <ArrowRight color="grey" className="ml-2" />
           </Button>
