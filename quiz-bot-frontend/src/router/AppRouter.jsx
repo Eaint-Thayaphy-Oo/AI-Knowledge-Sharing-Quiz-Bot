@@ -22,14 +22,6 @@ const AppRouter = () => {
         <Route path="/" element={<Layout />}>
           <Route index element={<Login />} />
           <Route path="register" element={<Register />} />
-          {/* <Route
-            path="admin/dashboard"
-            element={
-              <ProtectedRoute role="admin">
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          /> */}
           <Route
             path="admin/dashboard"
             element={
