@@ -1,10 +1,5 @@
-import {
-  Route,
-  RouterProvider,
-  createBrowserRouter,
-  createRoutesFromElements,
-} from "react-router-dom";
-import Layout from "../Layout";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Layout from "@/Layout";
 import Home from "@/pages/home/Home";
 import CategoryLayout from "@/pages/category/CategoryLayout";
 import { CategoryHome } from "@/pages/category/CategoryHome";
@@ -17,14 +12,30 @@ import { Login } from "@/pages/Login";
 import { Register } from "@/pages/Register";
 import Invite from "@/pages/invite/Invite";
 import InviteLayout from "@/pages/invite/InviteLayout";
+import AdminDashboard from "@/pages/AdminDashboard";
+import RedirectRoute from "@/components/RedirectRoute";
 
-const Router = () => {
-  const router = createBrowserRouter(
-    createRoutesFromElements(
-      <>
+const AppRouter = () => {
+  return (
+    <Router>
+      <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Login />} />
-          <Route path="register" element={<Register />}></Route>
+          <Route path="register" element={<Register />} />
+          {/* <Route
+            path="admin/dashboard"
+            element={
+              <ProtectedRoute role="admin">
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          /> */}
+          <Route
+            path="admin/dashboard"
+            element={
+              <RedirectRoute component={AdminDashboard}/>
+            }
+          />
           <Route path="home" element={<HomeLayout />}>
             <Route index element={<Home />} />
           </Route>
@@ -41,10 +52,9 @@ const Router = () => {
             <Route index element={<WinningScreenHome />} />
           </Route>
         </Route>
-      </>
-    )
+      </Routes>
+    </Router>
   );
-  return <RouterProvider router={router} />;
 };
 
-export default Router;
+export default AppRouter;

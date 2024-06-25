@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 export const Login = () => {
@@ -9,16 +9,45 @@ export const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      //console.log(localStorage.getItem('user'));
+
+      if (!response.ok) {
+        throw new Error("Login failed");
+      }
+
+      const result = await response.json();
+      //console.log(result);
+      const { user, token } = result;
+
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", token);
+
+      if (user.role === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/home");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
   };
 
   return (
     <>
       <div className="bg-indigo-950 min-h-screen relative">
         <div className="flex flex-col place-items-start justify-center ml-10">
-          <h1 className="font-bold text-3xl sm:text-2xl text-white mt-28 ">
+          <h1 className="font-bold text-3xl sm:text-2xl text-white mt-28">
             Welcome Back!
           </h1>
           <p className="font-bold text-xl sm:text-2xl text-white mt-8">

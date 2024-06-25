@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { Button } from "@/components/ui/button";
 
 export const Register = () => {
@@ -9,9 +10,23 @@ export const Register = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/register",
+        data
+      );
+      if (response.data.status === "success") {
+        navigate("/");
+      } else {
+        alert("Registration failed");
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      alert("An error occurred during registration");
+    }
   };
 
   return (
@@ -48,9 +63,9 @@ export const Register = () => {
                 placeholder="Username"
                 id="name"
               />
-              {errors.email && (
+              {errors.name && (
                 <p className="text-red-500 text-xs italic">
-                  {errors.email.message}
+                  {errors.name.message}
                 </p>
               )}
             </div>
@@ -93,7 +108,7 @@ export const Register = () => {
             </div>
             <p className="font-bold text-md sm:text-lg flex items-center justify-center text-white mt-8">
               Already have an account?{" "}
-              <Link to="/" className="text-[#59F8E8]  ml-1">
+              <Link to="/" className="text-[#59F8E8] ml-1">
                 Sign In
               </Link>
             </p>
