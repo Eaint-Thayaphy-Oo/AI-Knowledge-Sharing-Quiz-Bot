@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\GameController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,3 +21,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+
+Route::middleware('auth:api')->group(function () {
+    Route::post('create-room', [GameController::class, 'createRoom']);
+    Route::post('join-room', [GameController::class, 'joinRoom']);
+    Route::post('submit-answer', [GameController::class, 'submitAnswer']);
+    Route::get('questions', [GameController::class, 'getQuestions']);
+    Route::get('scores', [GameController::class, 'getScores']);
+});
