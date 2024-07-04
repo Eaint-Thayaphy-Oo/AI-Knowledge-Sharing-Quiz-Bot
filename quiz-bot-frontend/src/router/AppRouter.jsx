@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "@/Layout";
-import Home from "@/pages/home/Home";
 import CategoryLayout from "@/pages/category/CategoryLayout";
 import { CategoryHome } from "@/pages/category/CategoryHome";
 import QuizLayout from "@/pages/quiz/QuizLayout";
@@ -14,6 +13,7 @@ import Invite from "@/pages/invite/Invite";
 import InviteLayout from "@/pages/invite/InviteLayout";
 import AdminDashboard from "@/pages/AdminDashboard";
 import RedirectRoute from "@/components/RedirectRoute";
+import Home from "@/pages/home/Home";
 
 const AppRouter = () => {
   return (

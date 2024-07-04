@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\GameRoom;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class GameController extends Controller
 {
@@ -12,39 +13,51 @@ class GameController extends Controller
     {
         $user = $request->user();
 
-        // Generate a unique room code
         $roomCode = uniqid();
 
-        // Create the room
-        $room = GameRoom::create([
-            'room_code' => $roomCode,
-            'creator_id' => $user->id,
-        ]);
+        try {
+            $room = DB::transaction(function () use ($user, $roomCode) {
+                $room = GameRoom::create([
+                    'room_code' => $roomCode,
+                    'creator_id' => $user->id,
+                ]);
 
-        return response()->json([
-            'status' => 'success',
-            'room' => $room,
-            'room_code' => $roomCode
-        ], 201);
+                $room->participants()->attach($user->id);
+
+                return $room;
+            });
+
+            return response()->json([
+                'status' => 'success',
+                'room' => $room,
+                'room_code' => $roomCode
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to create room. Please try again.'
+            ], 500);
+        }
     }
-
 
     public function joinRoom(Request $request)
     {
         $user = $request->user();
-        $room = GameRoom::where('room_code', $request->room_code)->first();
+        $roomCode = $request->room_code;
+
+        $room = GameRoom::where('room_code', $roomCode)->first();
 
         if (!$room) {
             return response()->json(['message' => 'Room not found. Please check the room code and try again.'], 404);
         }
 
-        if ($room->creator_id == $user->id) {
-            return response()->json(['message' => 'You cannot join a room you created.'], 400);
+        try {
+            $room->participants()->attach($user->id);
+
+            return response()->json(['message' => 'Successfully joined the room.', 'room' => $room], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to join room. Please try again.'], 500);
         }
-
-        $room->participants()->attach($user->id);
-
-        return response()->json(['message' => 'Successfully joined the room.', 'room' => $room], 200);
     }
 
 
