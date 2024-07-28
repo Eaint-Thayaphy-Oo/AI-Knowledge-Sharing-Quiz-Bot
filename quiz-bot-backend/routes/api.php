@@ -1,31 +1,26 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GameController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
+// Public routes
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
+// Protected routes
 Route::middleware('auth:api')->group(function () {
+    // Game-related routes
     Route::post('create-room', [GameController::class, 'createRoom']);
     Route::post('join-room', [GameController::class, 'joinRoom']);
     Route::post('submit-answer', [GameController::class, 'submitAnswer']);
     Route::get('questions', [GameController::class, 'getQuestions']);
     Route::get('scores', [GameController::class, 'getScores']);
+
+    // Admin-related routes
+    Route::post('/categories', [AdminController::class, 'createCategory']);
+    Route::put('/categories/{id}', [AdminController::class, 'updateCategory']);
+    Route::delete('/categories/{id}', [AdminController::class, 'deleteCategory']);
+    Route::get('/categories', [AdminController::class, 'getCategories']);
 });

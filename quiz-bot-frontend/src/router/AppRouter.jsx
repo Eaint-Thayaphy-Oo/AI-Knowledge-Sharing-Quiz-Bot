@@ -14,6 +14,7 @@ import InviteLayout from "@/pages/invite/InviteLayout";
 import AdminDashboard from "@/pages/AdminDashboard";
 import RedirectRoute from "@/components/RedirectRoute";
 import Home from "@/pages/home/Home";
+import CategoryPage from "@/components/CategoryPage";
 
 const AppRouter = () => {
   return (
@@ -24,9 +25,7 @@ const AppRouter = () => {
           <Route path="register" element={<Register />} />
           <Route
             path="admin/dashboard"
-            element={
-              <RedirectRoute component={AdminDashboard}/>
-            }
+            element={<RedirectRoute component={AdminDashboard} />}
           />
           <Route path="home" element={<HomeLayout />}>
             <Route index element={<Home />} />
@@ -44,6 +43,7 @@ const AppRouter = () => {
             <Route index element={<WinningScreenHome />} />
           </Route>
         </Route>
+        <Route path="categories" element={<CategoryPage />}></Route>
       </Routes>
     </Router>
   );

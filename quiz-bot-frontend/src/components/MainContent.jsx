@@ -1,6 +1,7 @@
 import React from "react";
+import CategoryPage from "./CategoryPage";
 
-const MainContent = ({ selectedMenuItem }) => {
+const MainContent = ({ selectedMenuItem, categories, fetchCategories }) => {
   const renderContent = () => {
     switch (selectedMenuItem) {
       case "Dashboard":
@@ -8,7 +9,12 @@ const MainContent = ({ selectedMenuItem }) => {
       case "Users":
         return <div>Manage Users</div>;
       case "Categories":
-        return <div>Change your Categories</div>;
+        return (
+          <CategoryPage
+            categories={categories}
+            fetchCategories={fetchCategories}
+          />
+        );
       case "Questions":
         return <div>Change your Questions</div>;
       case "Score":

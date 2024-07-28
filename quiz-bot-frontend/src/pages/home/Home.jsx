@@ -84,7 +84,7 @@ const Home = () => {
       );
       console.log("Response received:", response);
       setMessage(`Joined room: ${response.data.room_code}`);
-      navigate("/invite");
+      navigate("/category");
     } catch (error) {
       console.error("Error joining room:", error);
       if (error.response) {
@@ -136,7 +136,7 @@ const Home = () => {
         >
           Next <ArrowRight color="grey" className="ml-2" />
         </Button>
-        {message && <p className="mt-4 text-red-500">{message}</p>}
+        {/* {message && <p className="mt-4 text-red-500">{message}</p>} */}
       </div>
       <div>
         <p className="font-bold text-md sm:text-lg flex items-center justify-center text-white mt-8">
@@ -144,7 +144,7 @@ const Home = () => {
         </p>
         <Button
           variant="outline"
-          className="w-36 p-6 flex font-bold rounded-full mt-14 ml-20 bg-[#59F8E8] hover:drop-shadow-[0px_2px_5px_rgba(225,225,225)]"
+          className="w-36 p-6 flex font-bold rounded-full mt-10 ml-32 bg-[#59F8E8] hover:drop-shadow-[0px_2px_5px_rgba(225,225,225)]"
           onClick={handleCreateRoom}
         >
           Create Room <ArrowRight color="grey" className="ml-2" />
@@ -152,7 +152,7 @@ const Home = () => {
         {roomCode && <p>Room Code: {roomCode}</p>}
         {message && <p className="mt-4 text-red-500">{message}</p>}
       </div>
-      <div>
+      {/* <div>
         <p className="font-bold text-md sm:text-lg flex items-center justify-center text-white mt-8">
           Or
         </p>
@@ -162,7 +162,7 @@ const Home = () => {
         >
           Invite a friend
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 };

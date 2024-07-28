@@ -21,12 +21,22 @@ const Sidebar = ({ setSelectedMenuItem }) => {
   ];
 
   return (
-    <div className="min-h-full p-4">
-      <ul>
+    <div className="w-64 h-full flex flex-col ">
+      <div className="flex items-center justify-center p-4">
+        <img src="" alt="admin"/><br />
+        <h1 className="text-2xl font-bold">Admin</h1>
+      </div>
+      <ul className="flex flex-col mt-4">
         {menuItems.map((item) => (
           <li
             key={item.name}
-            className=" text-white py-2 cursor-pointer flex items-center"
+            className="cursor-pointer flex items-center p-4"
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#1e1b4b")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "transparent")
+            }
             onClick={() => setSelectedMenuItem(item.name)}
           >
             <item.icon className="mr-2" />
