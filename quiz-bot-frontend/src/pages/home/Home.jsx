@@ -149,8 +149,8 @@ const Home = () => {
         >
           Create Room <ArrowRight color="grey" className="ml-2" />
         </Button>
-        {roomCode && <p>Room Code: {roomCode}</p>}
-        {message && <p className="mt-4 text-red-500">{message}</p>}
+        {roomCode && <p className="text-[#59F8E8]">Room Code: {roomCode}</p>}
+        {message && <p className="mt-4 text-[#59F8E8]">{message}</p>}
       </div>
       {/* <div>
         <p className="font-bold text-md sm:text-lg flex items-center justify-center text-white mt-8">

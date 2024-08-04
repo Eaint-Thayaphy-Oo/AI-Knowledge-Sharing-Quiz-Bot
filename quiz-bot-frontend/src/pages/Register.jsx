@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -11,6 +11,8 @@ export const Register = () => {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onSubmit = async (data) => {
     try {
@@ -19,13 +21,18 @@ export const Register = () => {
         data
       );
       if (response.data.status === "success") {
-        navigate("/");
+        setSuccessMessage("Registration successful!");
+        setErrorMessage("");
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
       } else {
-        alert("Registration failed");
+        setErrorMessage("Registration failed");
+        setSuccessMessage("");
       }
     } catch (error) {
-      console.error("Registration error:", error);
-      alert("An error occurred during registration");
+      setErrorMessage("An error occurred during registration");
+      setSuccessMessage("");
     }
   };
 
@@ -45,7 +52,7 @@ export const Register = () => {
             className="absolute top-20 right-0 mb-10 sm:w-80 md:w-96"
           />
         </div>
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center w-full">
           <img
             src="/assets/images/image2.png"
             alt="image2"
@@ -53,23 +60,31 @@ export const Register = () => {
           />
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="w-full max-w-sm rounded p-8 mt-32"
+            className="w-full max-w-sm rounded p-8 mt-32 relative z-10"
           >
+            {successMessage && (
+              <div className="mb-4 text-green-500 font-bold">
+                {successMessage}
+              </div>
+            )}
+            {errorMessage && (
+              <div className="mb-4 text-red-500 font-bold">{errorMessage}</div>
+            )}
             <div className="mb-4">
               <input
-                {...register("name", { required: "User Name is required" })}
+                {...register("name", { required: "Name is required" })}
                 className="appearance-none bg-transparent border-b-2 border-gray-300 w-full placeholder-white text-white mr-3 py-1 px-2 leading-tight focus:outline-none focus:border-blue-500"
-                type="text"
+                type="name"
                 placeholder="Username"
                 id="name"
               />
-              {errors.name && (
+              {errors.email && (
                 <p className="text-red-500 text-xs italic">
-                  {errors.name.message}
+                  {errors.email.message}
                 </p>
               )}
             </div>
-            <div className="mb-4 mt-5">
+            <div className="mb-4  mt-5">
               <input
                 {...register("email", { required: "Email is required" })}
                 className="appearance-none bg-transparent border-b-2 border-gray-300 w-full placeholder-white text-white mr-3 py-1 px-2 leading-tight focus:outline-none focus:border-blue-500"
@@ -97,7 +112,7 @@ export const Register = () => {
                 </p>
               )}
             </div>
-            <div className="flex items-center justify-between mt-24">
+            <div className="flex items-center justify-center mt-24">
               <Button
                 type="submit"
                 variant="outline"
@@ -107,7 +122,7 @@ export const Register = () => {
               </Button>
             </div>
             <p className="font-bold text-md sm:text-lg flex items-center justify-center text-white mt-8">
-              Already have an account?{" "}
+              Don't have an account?{" "}
               <Link to="/" className="text-[#59F8E8] ml-1">
                 Sign In
               </Link>

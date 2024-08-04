@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,8 @@ export const Login = () => {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onSubmit = async (data) => {
     try {
@@ -20,26 +22,30 @@ export const Login = () => {
         },
         body: JSON.stringify(data),
       });
-      //console.log(localStorage.getItem('user'));
 
       if (!response.ok) {
         throw new Error("Login failed");
       }
 
       const result = await response.json();
-      //console.log(result);
       const { user, token } = result;
 
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", token);
 
-      if (user.role === "admin") {
-        navigate("/admin/dashboard");
-      } else {
-        navigate("/home");
-      }
+      setSuccessMessage("Login successful!");
+      setErrorMessage("");
+
+      setTimeout(() => {
+        if (user.role === "admin") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/home");
+        }
+      }, 2000);
     } catch (error) {
-      console.error("Error during login:", error);
+      setErrorMessage("Error during login: " + error.message);
+      setSuccessMessage("");
     }
   };
 
@@ -59,7 +65,7 @@ export const Login = () => {
             className="absolute top-20 right-0 mb-10 sm:w-80 md:w-96"
           />
         </div>
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center w-full">
           <img
             src="/assets/images/image2.png"
             alt="image2"
@@ -67,8 +73,16 @@ export const Login = () => {
           />
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="w-full max-w-sm rounded p-8 mt-32"
+            className="w-full max-w-sm rounded p-8 mt-32 relative z-10"
           >
+            {successMessage && (
+              <div className="mb-4 text-green-500 font-bold">
+                {successMessage}
+              </div>
+            )}
+            {errorMessage && (
+              <div className="mb-4 text-red-500 font-bold">{errorMessage}</div>
+            )}
             <div className="mb-4">
               <input
                 {...register("email", { required: "Email is required" })}
@@ -97,7 +111,7 @@ export const Login = () => {
                 </p>
               )}
             </div>
-            <div className="flex items-center justify-between mt-24">
+            <div className="flex items-center justify-center mt-24">
               <Button
                 type="submit"
                 variant="outline"
