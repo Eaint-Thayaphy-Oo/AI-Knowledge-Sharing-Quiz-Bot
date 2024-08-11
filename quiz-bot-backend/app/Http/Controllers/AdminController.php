@@ -38,27 +38,48 @@ class AdminController extends Controller
 
     public function createQuestion(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'question' => 'required|string',
-            'answer' => 'required|string',
-            'categoryId' => 'required|integer|exists:categories,id',
+            'options' => 'required|array|min:4|max:4',
+            'correctAnswer' => 'required|integer|between:0,3',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
-        $question = Question::create([
-            'question' => $request->input('question'),
-            'answer' => $request->input('answer'),
-            'category_id' => $request->input('categoryId'),
-        ]);
+        $question = Question::create($validated);
 
         return response()->json($question, 201);
     }
 
-
-    public function getQuestions($categoryId)
+    public function updateQuestion(Request $request, $id)
     {
-        $questions = Question::where('category_id', $categoryId)->get();
-        return response()->json($questions, 200);
+        $validated = $request->validate([
+            'question' => 'required|string',
+            'options' => 'required|array|min:4|max:4',
+            'correctAnswer' => 'required|integer|between:0,3',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        $question = Question::findOrFail($id);
+        $question->update($validated);
+
+        return response()->json($question);
     }
 
-    // Add methods for updating and deleting categories and questions
+    public function deleteQuestion($id)
+    {
+        $question = Question::findOrFail($id);
+        $question->delete();
+
+        return response()->json(null, 204);
+    }
+
+    public function getQuestions()
+    {
+        try {
+            $questions = Question::all();
+            return response()->json($questions, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch questions.'], 500);
+        }
+    }
 }

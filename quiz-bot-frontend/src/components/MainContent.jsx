@@ -1,7 +1,14 @@
 import React from "react";
 import CategoryPage from "./CategoryPage";
+import QuestionPage from "./QuestionPage";
 
-const MainContent = ({ selectedMenuItem, categories, fetchCategories }) => {
+const MainContent = ({
+  selectedMenuItem,
+  categories,
+  fetchCategories,
+  questions,
+  fetchQuestions,
+}) => {
   const renderContent = () => {
     switch (selectedMenuItem) {
       case "Dashboard":
@@ -16,7 +23,9 @@ const MainContent = ({ selectedMenuItem, categories, fetchCategories }) => {
           />
         );
       case "Questions":
-        return <div>Change your Questions</div>;
+        return (
+          <QuestionPage questions={questions} fetchQuestions={fetchQuestions} />
+        );
       case "Score":
         return <div>Your Score</div>;
       case "Change Password":
@@ -30,7 +39,7 @@ const MainContent = ({ selectedMenuItem, categories, fetchCategories }) => {
 
   return (
     <div className="flex-1 bg-indigo-50 p-6 text-indigo-900">
-      <h1 className="text-2xl mb-4">{selectedMenuItem}</h1>
+      {/* <h1 className="text-2xl mb-4">{selectedMenuItem}</h1> */}
       {renderContent()}
     </div>
   );

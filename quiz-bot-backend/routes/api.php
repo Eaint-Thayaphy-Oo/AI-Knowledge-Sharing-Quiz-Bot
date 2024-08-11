@@ -14,13 +14,16 @@ Route::middleware('auth:api')->group(function () {
     // Game-related routes
     Route::post('create-room', [GameController::class, 'createRoom']);
     Route::post('join-room', [GameController::class, 'joinRoom']);
-    Route::post('submit-answer', [GameController::class, 'submitAnswer']);
-    Route::get('questions', [GameController::class, 'getQuestions']);
-    Route::get('scores', [GameController::class, 'getScores']);
 
     // Admin-related routes
     Route::post('/categories', [AdminController::class, 'createCategory']);
     Route::put('/categories/{id}', [AdminController::class, 'updateCategory']);
     Route::delete('/categories/{id}', [AdminController::class, 'deleteCategory']);
     Route::get('/categories', [AdminController::class, 'getCategories']);
+
+    // Question-related routes
+    Route::post('/questions', [AdminController::class, 'createQuestion']);
+    Route::put('/questions/{id}', [AdminController::class, 'updateQuestion']);
+    Route::delete('/questions/{id}', [AdminController::class, 'deleteQuestion']);
+    Route::get('questions', [AdminController::class, 'getQuestions']);
 });

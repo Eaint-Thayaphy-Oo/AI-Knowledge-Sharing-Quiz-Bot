@@ -59,7 +59,4 @@ class GameController extends Controller
             return response()->json(['message' => 'Failed to join room. Please try again.'], 500);
         }
     }
-
-
-    // Add other necessary methods here (submitAnswer, getQuestions, getScores)
 }

@@ -7,12 +7,7 @@ import MainContent from "@/components/MainContent";
 const AdminDashboard = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState("Dashboard");
   const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    if (selectedMenuItem === "Categories") {
-      fetchCategories();
-    }
-  }, [selectedMenuItem]);
+  const [questions, setQuestions] = useState([]);
 
   const fetchCategories = async () => {
     try {
@@ -23,6 +18,21 @@ const AdminDashboard = () => {
     }
   };
 
+  const fetchQuestions = async () => {
+    try {
+      const response = await axios.get("/api/questions");
+      console.log("Fetched Questions:", response.data);
+      setQuestions(response.data);
+    } catch (error) {
+      console.error("Error fetching questions:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+    fetchQuestions();
+  }, []);
+
   return (
     <div className="flex bg-gradient-to-t from-indigo-50 to-indigo-950 min-h-screen text-white">
       <Sidebar setSelectedMenuItem={setSelectedMenuItem} />
@@ -32,6 +42,8 @@ const AdminDashboard = () => {
           selectedMenuItem={selectedMenuItem}
           categories={categories}
           fetchCategories={fetchCategories}
+          questions={questions}
+          fetchQuestions={fetchQuestions}
         />
       </div>
     </div>
