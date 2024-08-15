@@ -1,40 +1,39 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export const CategoryHome = () => {
+  const navigate = useNavigate();
+
   const items = [
     {
+      id: 1,
       icon: <img src="/assets/images/rocket.png" />,
       label: "general knowledge",
     },
+    { id: 2, icon: <img src="/assets/images/science.png" />, label: "science" },
+    { id: 3, icon: <img src="/assets/images/IT.png" />, label: "IT" },
     {
-      icon: <img src="/assets/images/science.png" />,
-      label: "science",
-    },
-    {
-      icon: <img src="/assets/images/IT.png" />,
-      label: "IT",
-    },
-    {
+      id: 4,
       icon: <img src="/assets/images/computer.png" />,
       label: "web development",
     },
+    { id: 5, icon: <img src="/assets/images/medal.png" />, label: "history" },
     {
-      icon: <img src="/assets/images/medal.png" />,
-      label: "history",
-    },
-    {
+      id: 6,
       icon: <img src="/assets/images/music.png" />,
       label: "entertainment",
     },
+    { id: 7, icon: <img src="/assets/images/target.png" />, label: "sports" },
     {
-      icon: <img src="/assets/images/target.png" />,
-      label: "sports",
-    },
-    {
+      id: 8,
       icon: <img src="/assets/images/setting.png" />,
       label: "education",
     },
   ];
+
+  const handleCategoryClick = (categoryId) => {
+    navigate(`/quiz?category_id=${categoryId}`);
+  };
 
   return (
     <>
@@ -68,6 +67,7 @@ export const CategoryHome = () => {
             <div
               key={index}
               className="bg-white p-8 w-72 rounded-2xl mx-auto flex flex-col items-center mb-10"
+              onClick={() => handleCategoryClick(item.id)}
             >
               <div className="-mt-14 ml-48 w-20">{item.icon}</div>
               <p className="text-2xl font-semibold capitalize flex justify-center items-center pt-2 text-center">

@@ -44,6 +44,8 @@ const AppRouter = () => {
           </Route>
         </Route>
         <Route path="categories" element={<CategoryPage />}></Route>
+        <Route path="/category-home" element={<CategoryHome />} />
+        <Route path="/quiz-home" element={<QuizHome />} />
       </Routes>
     </Router>
   );

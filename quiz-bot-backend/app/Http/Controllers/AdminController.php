@@ -82,4 +82,9 @@ class AdminController extends Controller
             return response()->json(['error' => 'Failed to fetch questions.'], 500);
         }
     }
+    // public function getQuestions($category)
+    // {
+    //     $questions = Question::where('category', $category)->with('options')->get();
+    //     return response()->json(['questions' => $questions]);
+    // }
 }
