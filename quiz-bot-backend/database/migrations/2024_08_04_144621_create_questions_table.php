@@ -14,6 +14,7 @@ class CreateQuestionsTable extends Migration
             $table->json('options');
             $table->integer('correctAnswer');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->integer('level'); 
             $table->timestamps();
         });
     }

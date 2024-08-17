@@ -8,10 +8,12 @@ const QuestionPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
+  const [selectedLevel, setSelectedLevel] = useState(1); // Default to level 1
 
-  const fetchQuestions = async () => {
+  const fetchQuestions = async (level) => {
     try {
-      const response = await axios.get("/api/questions");
+      const response = await axios.get(`/api/questions?level=${level}`);
+      console.log("Fetched questions:", response.data); // Add logging
       setQuestions(response.data);
     } catch (error) {
       console.error("Error fetching questions:", error);
@@ -28,9 +30,14 @@ const QuestionPage = () => {
   };
 
   useEffect(() => {
-    fetchQuestions();
+    fetchQuestions(selectedLevel);
     fetchCategories();
-  }, []);
+  }, [selectedLevel]); // Add selectedLevel to dependency array
+
+  const handleLevelChange = (event) => {
+    const newLevel = parseInt(event.target.value, 10);
+    setSelectedLevel(newLevel);
+  };
 
   const handleAddQuestion = () => {
     setSelectedQuestion(null);
@@ -50,7 +57,7 @@ const QuestionPage = () => {
         message: "Question deleted successfully",
         type: "success",
       });
-      fetchQuestions();
+      fetchQuestions(selectedLevel);
     } catch (error) {
       console.error("Error deleting question:", error);
       setAlert({
@@ -99,6 +106,21 @@ const QuestionPage = () => {
           Add Question
         </button>
       </div>
+      <div className="mb-4">
+        <label htmlFor="level" className="mr-2">
+          Select Level:
+        </label>
+        <select
+          id="level"
+          value={selectedLevel}
+          onChange={handleLevelChange}
+          className="px-4 py-2 bg-[#59F8E8] text-[#1e1b4b] rounded"
+        >
+          <option value={1}>Level 1</option>
+          <option value={2}>Level 2</option>
+          <option value={3}>Level 3</option>
+        </select>
+      </div>
       <table className="w-full text-white">
         <thead className="bg-indigo-950">
           <tr>
@@ -110,11 +132,18 @@ const QuestionPage = () => {
             <th className="px-4 py-2 border-b">Option D</th>
             <th className="px-4 py-2 border-b">Correct Answer</th>
             <th className="px-4 py-2 border-b">Category ID</th>
+            <th className="px-4 py-2 border-b">Level</th>
             <th className="px-4 py-2 border-b">Actions</th>
           </tr>
         </thead>
         <tbody className="bg-[#89e2dc] text-[#1e1b4b]">
-          {Array.isArray(questions) &&
+          {questions.length === 0 ? (
+            <tr>
+              <td colSpan="10" className="px-4 py-2 text-center">
+                No questions available
+              </td>
+            </tr>
+          ) : (
             questions.map((question) => (
               <tr key={question.id}>
                 <td className="px-4 py-2 border-b text-center">
@@ -142,6 +171,9 @@ const QuestionPage = () => {
                   {question.category_id}
                 </td>
                 <td className="px-4 py-2 border-b text-center">
+                  {question.level}
+                </td>
+                <td className="px-4 py-2 border-b text-center">
                   <button
                     onClick={() => handleEditQuestion(question)}
                     className="px-2 py-1 bg-blue-500 text-white rounded"
@@ -156,13 +188,14 @@ const QuestionPage = () => {
                   </button>
                 </td>
               </tr>
-            ))}
+            ))
+          )}
         </tbody>
       </table>
       <QuestionModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        fetchQuestions={fetchQuestions}
+        fetchQuestions={() => fetchQuestions(selectedLevel)} // Pass selectedLevel
         question={selectedQuestion}
         setAlert={setAlert}
         categories={categories}

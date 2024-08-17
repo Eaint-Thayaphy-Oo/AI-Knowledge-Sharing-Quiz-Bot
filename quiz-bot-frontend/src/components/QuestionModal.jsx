@@ -14,6 +14,7 @@ const QuestionModal = ({
   const [options, setOptions] = useState(["", "", "", ""]);
   const [correctAnswer, setCorrectAnswer] = useState(0);
   const [category, setCategory] = useState("");
+  const [level, setLevel] = useState(""); // Add this line
 
   useEffect(() => {
     if (question) {
@@ -21,11 +22,13 @@ const QuestionModal = ({
       setOptions(question.options);
       setCorrectAnswer(question.correctAnswer);
       setCategory(question.category_id);
+      setLevel(question.level); // Set the level when editing a question
     } else {
       setQuestionText("");
       setOptions(["", "", "", ""]);
       setCorrectAnswer(0);
       setCategory("");
+      setLevel(""); // Reset level when adding a new question
     }
   }, [question]);
 
@@ -36,6 +39,7 @@ const QuestionModal = ({
         options,
         correctAnswer,
         category_id: category,
+        level, // Add level here
       };
       if (question) {
         await axios.put(`/api/questions/${question.id}`, data);
@@ -116,6 +120,18 @@ const QuestionModal = ({
             </option>
           ))}
         </select>
+
+        <select
+          value={level}
+          onChange={(e) => setLevel(e.target.value)}
+          className="border border-gray-300 p-2 w-full mb-4"
+        >
+          <option value="">Select Level</option>
+          <option value="1">Level 1</option>
+          <option value="2">Level 2</option>
+          <option value="3">Level 3</option>
+        </select>
+
         <div className="flex justify-end">
           <button
             onClick={handleSave}

@@ -8,29 +8,39 @@ export const QuizHome = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isCorrect, setIsCorrect] = useState(null);
-  const [timer, setTimer] = useState(30); 
+  const [timer, setTimer] = useState(30);
   const [isOpen, setIsOpen] = useState(false);
   const [searchParams] = useSearchParams();
   const categoryId = searchParams.get("category_id");
+  const [level, setLevel] = useState(1); // Default level
 
   useEffect(() => {
     const fetchQuestions = async () => {
+      console.log(
+        `Fetching questions for category ID: ${categoryId}, level: ${level}`
+      );
       try {
-        const response = await axios.get("/api/questions", {
-          params: { category_id: categoryId },
-        });
+        const response = await axios.get(
+          `/api/questions?category_id=${categoryId}&level=${level}`
+        );
+        console.log("Fetched questions:", response.data);
         setQuestions(response.data);
+        setCurrentQuestionIndex(0); // Reset index for new level
       } catch (error) {
-        console.error("Error fetching questions:", error);
+        console.error(
+          "Error fetching questions:",
+          error.response ? error.response.data : error.message
+        );
       }
     };
 
     fetchQuestions();
-  }, [categoryId]);
+  }, [categoryId, level]);
 
   useEffect(() => {
-    if (currentQuestionIndex >= questions.length) {
-      console.log("Quiz finished!");
+    if (currentQuestionIndex >= questions.length && questions.length > 0) {
+      // Move to next level if all questions are answered
+      setLevel((prevLevel) => prevLevel + 1);
       return;
     }
 
@@ -40,7 +50,8 @@ export const QuizHome = () => {
           clearInterval(timerInterval);
           // Move to the next question when timer ends
           setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-          return 30; // Reset timer for the next question
+          setTimer(30); // Reset timer for the next question
+          return 30;
         }
         return prevTimer - 1;
       });
@@ -71,24 +82,20 @@ export const QuizHome = () => {
     }, 2000);
   };
 
-  const openForm = () => {
-    setIsOpen(true);
-  };
-
-  const closeForm = () => {
-    setIsOpen(false);
-  };
+  const openForm = () => setIsOpen(true);
+  const closeForm = () => setIsOpen(false);
 
   const totalQuestions = questions.length;
   const currentQuestionNumber = currentQuestionIndex + 1;
 
-  // Calculate the width of the progress bar based on the timer
   const progressBarWidth = `${(timer / 30) * 100}%`;
 
   return (
     <div className="bg-indigo-950 text-center min-h-screen flex flex-col justify-between">
       <div className="p-6">
-        <h1 className="text-[#59F8E8] mb-10 text-2xl sm:text-3xl">Level 1</h1>
+        <h1 className="text-[#59F8E8] mb-10 text-2xl sm:text-3xl">
+          Level {level}
+        </h1>
         {questions.length > 0 && currentQuestionIndex < questions.length ? (
           <>
             <p className="text-white font-semibold text-lg sm:text-xl mb-10">
@@ -136,8 +143,8 @@ export const QuizHome = () => {
                       selectedOption
                         ? option === selectedOption
                           ? isCorrect
-                            ? "bg-[#7CF979]" // Correct answer
-                            : "bg-[#FF8585]" // Incorrect answer
+                            ? "bg-[#7CF979]"
+                            : "bg-[#FF8585]"
                           : "bg-slate-100"
                         : "bg-slate-100"
                     }`}

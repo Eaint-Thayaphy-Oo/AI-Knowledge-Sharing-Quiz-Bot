@@ -38,30 +38,30 @@ class AdminController extends Controller
 
     public function createQuestion(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'question' => 'required|string',
-            'options' => 'required|array|min:4|max:4',
-            'correctAnswer' => 'required|integer|between:0,3',
+            'options' => 'required|array',
+            'correctAnswer' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
+            'level' => 'required|integer|in:1,2,3' // Validate level
         ]);
 
-        $question = Question::create($validated);
-
+        $question = Question::create($request->all());
         return response()->json($question, 201);
     }
 
     public function updateQuestion(Request $request, $id)
     {
-        $validated = $request->validate([
+        $request->validate([
             'question' => 'required|string',
-            'options' => 'required|array|min:4|max:4',
-            'correctAnswer' => 'required|integer|between:0,3',
+            'options' => 'required|array',
+            'correctAnswer' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
+            'level' => 'required|integer|in:1,2,3' // Validate level
         ]);
 
         $question = Question::findOrFail($id);
-        $question->update($validated);
-
+        $question->update($request->all());
         return response()->json($question);
     }
 
@@ -73,18 +73,15 @@ class AdminController extends Controller
         return response()->json(null, 204);
     }
 
-    public function getQuestions()
+    public function getQuestions(Request $request)
     {
-        try {
-            $questions = Question::all();
-            return response()->json($questions, 200);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to fetch questions.'], 500);
-        }
+        $categoryId = $request->input('category_id');
+        $level = $request->input('level', 1);
+
+        $questions = Question::where('category_id', $categoryId)
+            ->where('level', $level)
+            ->get();
+
+        return response()->json($questions);
     }
-    // public function getQuestions($category)
-    // {
-    //     $questions = Question::where('category', $category)->with('options')->get();
-    //     return response()->json(['questions' => $questions]);
-    // }
 }
