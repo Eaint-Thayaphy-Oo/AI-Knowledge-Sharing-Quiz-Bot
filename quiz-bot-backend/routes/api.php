@@ -8,12 +8,17 @@ use Illuminate\Support\Facades\Route;
 // Public routes
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+Route::post('/change-password', [AuthController::class, 'changePassword'])->middleware('auth:sanctum');
 
 // Protected routes
 Route::middleware('auth:api')->group(function () {
     // Game-related routes
     Route::post('create-room', [GameController::class, 'createRoom']);
     Route::post('join-room', [GameController::class, 'joinRoom']);
+    Route::post('/select-category', [GameController::class, 'selectCategory']);
+
+    // User-related routes
+    Route::get('/users', [AdminController::class, 'getUsers']);
 
     // Admin-related routes
     Route::post('/categories', [AdminController::class, 'createCategory']);

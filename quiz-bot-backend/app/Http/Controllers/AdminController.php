@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Question;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -30,11 +31,12 @@ class AdminController extends Controller
         return response()->json(null, 204);
     }
 
-    public function getCategories()
+    public function getCategories(Request $request)
     {
         $categories = Category::all();
         return response()->json($categories, 200);
     }
+
 
     public function createQuestion(Request $request)
     {
@@ -43,7 +45,7 @@ class AdminController extends Controller
             'options' => 'required|array',
             'correctAnswer' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
-            'level' => 'required|integer|in:1,2,3' // Validate level
+            'level' => 'required|integer|in:1,2,3'
         ]);
 
         $question = Question::create($request->all());
@@ -57,7 +59,7 @@ class AdminController extends Controller
             'options' => 'required|array',
             'correctAnswer' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
-            'level' => 'required|integer|in:1,2,3' // Validate level
+            'level' => 'required|integer|in:1,2,3'
         ]);
 
         $question = Question::findOrFail($id);
@@ -83,5 +85,16 @@ class AdminController extends Controller
             ->get();
 
         return response()->json($questions);
+    }
+    // public function getQuestions(Request $request)
+    // {
+    //     $level = $request->query('level');
+    //     return Question::where('level', $level)->get();
+    // }
+
+    public function getUsers()
+    {
+        $users = User::all();
+        return response()->json($users);
     }
 }

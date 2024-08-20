@@ -35,11 +35,16 @@
 // // });
 
 import Echo from "laravel-echo";
-window.Pusher = require("pusher-js");
+import Pusher from "pusher-js";
 
-window.Echo = new Echo({
+window.Pusher = Pusher;
+
+const echo = new Echo({
     broadcaster: "pusher",
-    key: process.env.MIX_PUSHER_APP_KEY,
-    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    key: process.env.REACT_APP_PUSHER_KEY,
+    cluster: process.env.REACT_APP_PUSHER_CLUSTER,
     forceTLS: true,
+    encrypted: true,
 });
+
+export default echo;

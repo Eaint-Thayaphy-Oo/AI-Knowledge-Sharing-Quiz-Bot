@@ -1,6 +1,8 @@
 import React from "react";
 import CategoryPage from "./CategoryPage";
 import QuestionPage from "./QuestionPage";
+import UsersPage from "./UsersPage";
+import ChangePasswordPage from "./ChangePasswordPage";
 
 const MainContent = ({
   selectedMenuItem,
@@ -8,13 +10,14 @@ const MainContent = ({
   fetchCategories,
   questions,
   fetchQuestions,
+  theme,
 }) => {
   const renderContent = () => {
     switch (selectedMenuItem) {
       case "Dashboard":
         return <div>Welcome to the Dashboard</div>;
       case "Users":
-        return <div>Manage Users</div>;
+        return <UsersPage />;
       case "Categories":
         return (
           <CategoryPage
@@ -29,17 +32,27 @@ const MainContent = ({
       case "Score":
         return <div>Your Score</div>;
       case "Change Password":
-        return <div>Change your Password</div>;
+        return <ChangePasswordPage />;
       case "Settings":
-        return <div>Adjust your Settings</div>;
+        return (
+          <div>
+            <h2>Settings</h2>
+            <p>Adjust your preferences here.</p>
+          </div>
+        );
       default:
         return <div>Select a menu item</div>;
     }
   };
 
   return (
-    <div className="flex-1 bg-indigo-50 p-6 text-indigo-900">
-      {/* <h1 className="text-2xl mb-4">{selectedMenuItem}</h1> */}
+    <div
+      className={`flex-1 p-6 ${
+        theme === "light"
+          ? "bg-indigo-50 text-indigo-900"
+          : "bg-gray-800 text-gray-100"
+      }`}
+    >
       {renderContent()}
     </div>
   );

@@ -13,12 +13,21 @@ export const Register = () => {
   const navigate = useNavigate();
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [file, setFile] = useState(null);
 
   const onSubmit = async (data) => {
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+    // formData.append("role", data.role);
+    // if (file) formData.append("profile_image", file);
+
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/register",
-        data
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
       if (response.data.status === "success") {
         setSuccessMessage("Registration successful!");
@@ -34,6 +43,10 @@ export const Register = () => {
       setErrorMessage("An error occurred during registration");
       setSuccessMessage("");
     }
+  };
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
   };
 
   return (
@@ -112,6 +125,24 @@ export const Register = () => {
                 </p>
               )}
             </div>
+            {/* <div className="mb-4 mt-5">
+              <select
+                {...register("role", { required: "Role is required" })}
+                className="appearance-none bg-transparent border-b-2 border-gray-300 w-full placeholder-white text-white mr-3 py-1 px-2 leading-tight focus:outline-none focus:border-blue-500"
+              >
+                <option value="">Select Role</option>
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+              {errors.role && (
+                <p className="text-red-500 text-xs italic">
+                  {errors.role.message}
+                </p>
+              )}
+            </div> */}
+            {/* <div className="mb-6 mt-5">
+              <input type="file" accept="image/*" onChange={handleFileChange} />
+            </div> */}
             <div className="flex items-center justify-center mt-24">
               <Button
                 type="submit"

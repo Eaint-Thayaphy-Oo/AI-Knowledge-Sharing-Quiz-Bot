@@ -17,14 +17,14 @@ const Sidebar = ({ setSelectedMenuItem }) => {
     { name: "Questions", icon: ShieldQuestion },
     { name: "Score", icon: Blend },
     { name: "Change Password", icon: KeySquare },
-    { name: "Settings", icon: Settings },
+    // { name: "Settings", icon: Settings },
   ];
 
   return (
     <div className="w-64 h-full flex flex-col ">
       <div className="flex items-center justify-center p-4">
-        <img src="" alt="admin"/><br />
-        <h1 className="text-2xl font-bold">Admin</h1>
+        {/* <img src="" alt="admin"/><br /> */}
+        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
       </div>
       <ul className="flex flex-col mt-4">
         {menuItems.map((item) => (

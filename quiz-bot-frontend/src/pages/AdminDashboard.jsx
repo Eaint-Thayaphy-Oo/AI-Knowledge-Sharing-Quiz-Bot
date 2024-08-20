@@ -8,6 +8,7 @@ const AdminDashboard = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState("Dashboard");
   const [categories, setCategories] = useState([]);
   const [questions, setQuestions] = useState([]);
+  const [theme, setTheme] = useState("light"); // Light mode by default
 
   const fetchCategories = async () => {
     try {
@@ -21,11 +22,14 @@ const AdminDashboard = () => {
   const fetchQuestions = async () => {
     try {
       const response = await axios.get("/api/questions");
-      console.log("Fetched Questions:", response.data);
       setQuestions(response.data);
     } catch (error) {
       console.error("Error fetching questions:", error);
     }
+  };
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
 
   useEffect(() => {
@@ -34,16 +38,23 @@ const AdminDashboard = () => {
   }, []);
 
   return (
-    <div className="flex bg-gradient-to-t from-indigo-50 to-indigo-950 min-h-screen text-white">
+    <div
+      className={`flex ${
+        theme === "light"
+          ? "bg-gradient-to-t from-indigo-50 to-indigo-950"
+          : "bg-gray-900"
+      } min-h-screen text-white`}
+    >
       <Sidebar setSelectedMenuItem={setSelectedMenuItem} />
       <div className="flex-1 flex flex-col">
-        <Navbar />
+        <Navbar toggleTheme={toggleTheme} />
         <MainContent
           selectedMenuItem={selectedMenuItem}
           categories={categories}
           fetchCategories={fetchCategories}
           questions={questions}
           fetchQuestions={fetchQuestions}
+          theme={theme}
         />
       </div>
     </div>

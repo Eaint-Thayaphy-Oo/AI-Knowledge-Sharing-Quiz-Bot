@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CategoryChosen;
+use App\Events\CategorySelected;
 use Illuminate\Http\Request;
 use App\Models\GameRoom;
 use App\Models\User;
@@ -58,5 +60,41 @@ class GameController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to join room. Please try again.'], 500);
         }
+    }
+
+    public function selectCategory(Request $request)
+    {
+        // Debugging line to inspect the incoming request data
+        dd($request->all());
+
+        $request->validate([
+            'category_id' => 'required|integer',
+            'room_code' => 'required|string',
+        ]);
+
+        // Proceed with the logic after validation
+        $category_id = $request->input('category_id');
+        $room_code = $request->input('room_code');
+
+        // Broadcast to the room
+        event(new CategorySelected($room_code, $category_id));
+
+        return response()->json(['success' => true]);
+    }
+
+    public function chooseCategory(Request $request)
+    {
+        $categoryId = $request->input('category_id');
+        $gameRoomId = $request->input('game_room_id');
+
+        // Save category selection to the database
+        $gameRoom = GameRoom::find($gameRoomId);
+        $gameRoom->category_id = $categoryId;
+        $gameRoom->save();
+
+        // Broadcast category selection to other players
+        broadcast(new CategoryChosen($gameRoom, $categoryId))->toOthers();
+
+        return response()->json(['success' => true, 'message' => 'Category chosen']);
     }
 }

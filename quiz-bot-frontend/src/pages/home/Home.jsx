@@ -144,7 +144,7 @@ const Home = () => {
         </p>
         <Button
           variant="outline"
-          className="w-36 p-6 flex font-bold rounded-full mt-10 ml-32 bg-[#59F8E8] hover:drop-shadow-[0px_2px_5px_rgba(225,225,225)]"
+          className="w-36 p-6 lg:mx-auto flex font-bold rounded-full mt-10 ml-32 bg-[#59F8E8] hover:drop-shadow-[0px_2px_5px_rgba(225,225,225)]"
           onClick={handleCreateRoom}
         >
           Create Room <ArrowRight color="grey" className="ml-2" />

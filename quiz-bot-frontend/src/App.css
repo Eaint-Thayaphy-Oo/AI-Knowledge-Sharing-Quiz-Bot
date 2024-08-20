@@ -2,3 +2,13 @@
   padding: 0;
   margin: 0;
 }
+
+.light-mode {
+  --bg-color: #f0f0f0;
+  --text-color: #000000;
+}
+
+.dark-mode {
+  --bg-color: #1a202c;
+  --text-color: #ffffff;
+}

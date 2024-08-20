@@ -13,7 +13,7 @@ const QuestionPage = () => {
   const fetchQuestions = async (level) => {
     try {
       const response = await axios.get(`/api/questions?level=${level}`);
-      console.log("Fetched questions:", response.data); // Add logging
+      console.log("Fetched questions:", response.data); // Check if data is correct
       setQuestions(response.data);
     } catch (error) {
       console.error("Error fetching questions:", error);
@@ -71,6 +71,9 @@ const QuestionPage = () => {
   const handleCloseAlert = () => {
     setAlert({ show: false, message: "", type: "" });
   };
+
+  // Make sure each question has these properties
+  console.log(questions[0]);
 
   return (
     <div className="p-6">

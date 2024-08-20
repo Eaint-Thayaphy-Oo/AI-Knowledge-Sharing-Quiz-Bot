@@ -13,6 +13,7 @@ export const QuizHome = () => {
   const [searchParams] = useSearchParams();
   const categoryId = searchParams.get("category_id");
   const [level, setLevel] = useState(1); // Default level
+  const [roomCode, setRoomCode] = useState(null); // Store room code
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -39,7 +40,6 @@ export const QuizHome = () => {
 
   useEffect(() => {
     if (currentQuestionIndex >= questions.length && questions.length > 0) {
-      // Move to next level if all questions are answered
       setLevel((prevLevel) => prevLevel + 1);
       return;
     }
@@ -48,7 +48,6 @@ export const QuizHome = () => {
       setTimer((prevTimer) => {
         if (prevTimer <= 1) {
           clearInterval(timerInterval);
-          // Move to the next question when timer ends
           setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
           setTimer(30); // Reset timer for the next question
           return 30;
@@ -84,6 +83,24 @@ export const QuizHome = () => {
 
   const openForm = () => setIsOpen(true);
   const closeForm = () => setIsOpen(false);
+
+  useEffect(() => {
+    if (roomCode) {
+      const pusher = new pusher(import.meta.env.VITE_PUSHER_KEY, {
+        cluster: import.meta.env.VITE_PUSHER_CLUSTER,
+      });
+
+      const channel = pusher.subscribe(`room.${roomCode}`);
+      channel.bind("CategorySelected", (data) => {
+        console.log("Category selected:", data.category_id);
+        categoryId(data.category_id);
+      });
+
+      return () => {
+        pusher.unsubscribe(`room.${roomCode}`);
+      };
+    }
+  }, [roomCode]);
 
   const totalQuestions = questions.length;
   const currentQuestionNumber = currentQuestionIndex + 1;
