@@ -9,11 +9,17 @@ const QuestionPage = () => {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
   const [selectedLevel, setSelectedLevel] = useState(1); // Default to level 1
+  const [selectedCategory, setSelectedCategory] = useState(""); // Initially null
 
-  const fetchQuestions = async (level) => {
+  const showAlert = ({ show, message, type }) => {
+    setAlert({ show, message, type });
+  };
+
+  const fetchQuestions = async (categoryId, level) => {
     try {
-      const response = await axios.get(`/api/questions?level=${level}`);
-      console.log("Fetched questions:", response.data); // Check if data is correct
+      const response = await axios.get(
+        `/api/questions?category_id=${categoryId}&level=${level}`
+      );
       setQuestions(response.data);
     } catch (error) {
       console.error("Error fetching questions:", error);
@@ -24,15 +30,26 @@ const QuestionPage = () => {
     try {
       const response = await axios.get("/api/categories");
       setCategories(response.data);
+
+      // Set default category once categories are fetched
+      if (response.data.length > 0) {
+        setSelectedCategory(response.data[0].id); // Default to first category
+      }
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
   };
 
   useEffect(() => {
-    fetchQuestions(selectedLevel);
     fetchCategories();
-  }, [selectedLevel]); // Add selectedLevel to dependency array
+  }, []);
+
+  useEffect(() => {
+    // Fetch questions only when category and level are selected
+    if (selectedCategory !== null) {
+      fetchQuestions(selectedCategory, selectedLevel);
+    }
+  }, [selectedCategory, selectedLevel]);
 
   const handleLevelChange = (event) => {
     const newLevel = parseInt(event.target.value, 10);
@@ -57,7 +74,7 @@ const QuestionPage = () => {
         message: "Question deleted successfully",
         type: "success",
       });
-      fetchQuestions(selectedLevel);
+      fetchQuestions(selectedCategory, selectedLevel);
     } catch (error) {
       console.error("Error deleting question:", error);
       setAlert({
@@ -72,8 +89,9 @@ const QuestionPage = () => {
     setAlert({ show: false, message: "", type: "" });
   };
 
-  // Make sure each question has these properties
-  console.log(questions[0]);
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+  };
 
   return (
     <div className="p-6">
@@ -122,6 +140,23 @@ const QuestionPage = () => {
           <option value={1}>Level 1</option>
           <option value={2}>Level 2</option>
           <option value={3}>Level 3</option>
+        </select>
+      </div>
+      <div className="mb-4">
+        <label htmlFor="category" className="mr-2">
+          Select Category:
+        </label>
+        <select
+          id="category"
+          value={selectedCategory || ""}
+          onChange={handleCategoryChange}
+          className="px-4 py-2 bg-[#59F8E8] text-[#1e1b4b] rounded"
+        >
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
         </select>
       </div>
       <table className="w-full text-white">
@@ -198,10 +233,12 @@ const QuestionPage = () => {
       <QuestionModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        fetchQuestions={() => fetchQuestions(selectedLevel)} // Pass selectedLevel
         question={selectedQuestion}
-        setAlert={setAlert}
-        categories={categories}
+        category={selectedCategory}
+        level={selectedLevel}
+        fetchQuestions={() => fetchQuestions(selectedCategory, selectedLevel)}
+        setAlert={showAlert}
+        categories={categories} 
       />
     </div>
   );

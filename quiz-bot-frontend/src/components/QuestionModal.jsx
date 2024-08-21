@@ -8,7 +8,7 @@ const QuestionModal = ({
   fetchQuestions,
   question,
   setAlert,
-  categories,
+  categories = [], // Provide a default empty array for categories
 }) => {
   const [questionText, setQuestionText] = useState("");
   const [options, setOptions] = useState(["", "", "", ""]);
@@ -108,19 +108,26 @@ const QuestionModal = ({
             </label>
           </div>
         ))}
+
+        {/* Category Select */}
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           className="border border-gray-300 p-2 w-full mb-4"
         >
           <option value="">Select Category</option>
-          {categories.map((cat) => (
-            <option key={cat.id} value={cat.id}>
-              {cat.name}
-            </option>
-          ))}
+          {categories.length > 0 ? (
+            categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))
+          ) : (
+            <option disabled>No categories available</option>
+          )}
         </select>
 
+        {/* Level Select */}
         <select
           value={level}
           onChange={(e) => setLevel(e.target.value)}
