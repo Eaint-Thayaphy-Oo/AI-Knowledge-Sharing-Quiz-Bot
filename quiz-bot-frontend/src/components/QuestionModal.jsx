@@ -41,6 +41,7 @@ const QuestionModal = ({
         category_id: category,
         level, // Add level here
       };
+
       if (question) {
         await axios.put(`/api/questions/${question.id}`, data);
         setAlert({
@@ -56,8 +57,19 @@ const QuestionModal = ({
           type: "success",
         });
       }
+
+      // Fetch updated questions
       fetchQuestions();
+
+      // Close the modal
       onClose();
+
+      // Clear the form fields
+      setQuestionText("");
+      setOptions(["", "", "", ""]);
+      setCorrectAnswer(0);
+      setCategory("");
+      setLevel("");
     } catch (error) {
       console.error("Error saving question:", error);
       setAlert({

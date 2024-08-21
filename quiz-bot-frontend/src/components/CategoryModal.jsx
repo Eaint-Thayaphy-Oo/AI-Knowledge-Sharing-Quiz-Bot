@@ -36,11 +36,22 @@ const CategoryModal = ({
           type: "success",
         });
       }
+
+      // Fetch updated categories
       fetchCategories();
+
+      // Close the modal
       onClose();
+
+      // Clear the input field
+      setName("");
     } catch (error) {
       console.error("Error saving category:", error);
-      setAlert({ show: true, message: "Error saving category", type: "error" });
+      setAlert({
+        show: true,
+        message: "Error saving category",
+        type: "error",
+      });
     }
   };
 
