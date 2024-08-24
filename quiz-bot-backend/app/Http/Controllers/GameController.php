@@ -64,22 +64,13 @@ class GameController extends Controller
 
     public function selectCategory(Request $request)
     {
-        // Debugging line to inspect the incoming request data
-        dd($request->all());
+        $categoryId = $request->input('category_id');
+        $roomCode = $request->input('room_code'); // Assuming the room code is passed
 
-        $request->validate([
-            'category_id' => 'required|integer',
-            'room_code' => 'required|string',
-        ]);
+        // Broadcast the event to the room
+        event(new CategorySelected($roomCode, $categoryId));
 
-        // Proceed with the logic after validation
-        $category_id = $request->input('category_id');
-        $room_code = $request->input('room_code');
-
-        // Broadcast to the room
-        event(new CategorySelected($room_code, $category_id));
-
-        return response()->json(['success' => true]);
+        return response()->json(['message' => 'Category selected and broadcasted.']);
     }
 
     public function chooseCategory(Request $request)

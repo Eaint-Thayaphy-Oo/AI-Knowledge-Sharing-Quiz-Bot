@@ -5,24 +5,23 @@ namespace App\Events;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class CategorySelected implements ShouldBroadcast
+class CategorySelected
 {
-    public $category_id;
-    public $room_code;
+    use InteractsWithSockets, SerializesModels;
 
-    public function __construct($room_code, $category_id)
+    public $roomCode;
+    public $categoryId;
+
+    public function __construct($roomCode, $categoryId)
     {
-        $this->category_id = $category_id;
-        $this->room_code = $room_code;
+        $this->roomCode = $roomCode;
+        $this->categoryId = $categoryId;
     }
 
     public function broadcastOn()
     {
-        return new Channel('room.' . $this->room_code);
+        return new PresenceChannel('room.' . $this->roomCode);
     }
 }
