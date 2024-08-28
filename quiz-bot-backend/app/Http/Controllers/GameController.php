@@ -51,7 +51,9 @@ class GameController extends Controller
 
         if (!$room) {
             return response()->json(['message' => 'Room not found. Please check the room code and try again.'], 404);
-        }
+        } 
+
+        $updateRoom = $room->update(['is_exit' => true]);
 
         try {
             $room->participants()->attach($user->id);
@@ -60,6 +62,13 @@ class GameController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to join room. Please try again.'], 500);
         }
+    }
+
+    public function updateRoomCategory($room_id, $category_id){
+        $room = GameRoom::where('id', $room_id)->update(['category_id' => $category_id]);
+        return response()->json([
+            'status' => 'success',
+        ], 201);
     }
 
     public function selectCategory(Request $request)

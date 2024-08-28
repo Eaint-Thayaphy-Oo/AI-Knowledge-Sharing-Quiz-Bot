@@ -84,7 +84,12 @@ const Home = () => {
       );
       console.log("Response received:", response);
       setMessage(`Joined room: ${response.data.room_code}`);
-      navigate("/category");
+      if (response.data.room.is_exit && response.data.room.category_id) {
+        const categoryId = response.data.room.category_id;
+        navigate(`/quiz?category_id=${categoryId}`);
+      } else {
+        navigate(`/category/${response.data.room.id}`);
+      }
     } catch (error) {
       console.error("Error joining room:", error);
       if (error.response) {

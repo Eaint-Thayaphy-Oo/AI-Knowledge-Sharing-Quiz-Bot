@@ -34,7 +34,7 @@ const AppRouter = () => {
             <Route index element={<Invite />} />
           </Route>
           <Route path="category" element={<CategoryLayout />}>
-            <Route index element={<CategoryHome />} />
+            <Route path=":room-id" element={<CategoryHome />} />
           </Route>
           <Route path="quiz" element={<QuizLayout />}>
             <Route index element={<QuizHome />} />

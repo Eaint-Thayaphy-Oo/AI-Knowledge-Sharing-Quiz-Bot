@@ -16,6 +16,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('create-room', [GameController::class, 'createRoom']);
     Route::post('join-room', [GameController::class, 'joinRoom']);
     Route::post('/select-category', [GameController::class, 'selectCategory']);
+    Route::patch('update-room-category/{room_id}/{category_id}', [GameController::class, 'updateRoomCategory']);
 
     // User-related routes
     Route::get('/users', [AdminController::class, 'getUsers']);

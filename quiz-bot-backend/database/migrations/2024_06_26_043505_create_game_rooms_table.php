@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('room_code')->unique();
             $table->unsignedBigInteger('creator_id');
+            $table->boolean('is_exit')->default(false);
+            $table->integer('category_id')->nullable();
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

@@ -9,7 +9,7 @@ class GameRoom extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['room_code', 'creator_id'];
+    protected $fillable = ['room_code', 'creator_id', 'is_exit'];
 
     public function creator()
     {

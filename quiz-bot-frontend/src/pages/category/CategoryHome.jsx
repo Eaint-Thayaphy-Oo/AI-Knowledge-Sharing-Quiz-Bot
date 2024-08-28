@@ -1,8 +1,12 @@
 import React from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export const CategoryHome = () => {
   const navigate = useNavigate();
+  const path = window.location.pathname;
+  const segments = path.split("/");
+  const roomId = segments.pop() || segments.pop();
 
   const items = [
     {
@@ -43,7 +47,20 @@ export const CategoryHome = () => {
     },
   ];
 
-  const handleCategoryClick = (categoryId) => {
+  const handleCategoryClick = async (categoryId) => {
+    const res = await axios.patch(
+      `${
+        import.meta.env.VITE_BACKEND_URL
+      }/api/update-room-category/${roomId}/${categoryId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (res) {
+      console.log(res);
+    }
     navigate(`/quiz?category_id=${categoryId}`);
   };
 
