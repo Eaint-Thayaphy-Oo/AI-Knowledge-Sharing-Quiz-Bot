@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('profile_image')->nullable();
             $table->string('role', 15)->default('user');
             $table->timestamps();
         });
@@ -31,6 +30,12 @@ return new class extends Migration
      */
     public function down()
     {
+        // Drop foreign key constraints first if needed
+        Schema::table('scores', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+        });
+
+        // Drop the users table
         Schema::dropIfExists('users');
     }
-};
+}

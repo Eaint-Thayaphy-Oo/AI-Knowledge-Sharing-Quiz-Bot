@@ -86,7 +86,7 @@ const Home = () => {
       setMessage(`Joined room: ${response.data.room_code}`);
       if (response.data.room.is_exit && response.data.room.category_id) {
         const categoryId = response.data.room.category_id;
-        navigate(`/quiz?category_id=${categoryId}`);
+        navigate(`/quiz?category_id=${categoryId}&game_room_id=${response.data.room.id}`);
       } else {
         navigate(`/category/${response.data.room.id}`);
       }

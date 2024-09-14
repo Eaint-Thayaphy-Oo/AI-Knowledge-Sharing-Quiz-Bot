@@ -20,7 +20,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'profile_image',
     ];
 
     /**
@@ -41,4 +40,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function scores()
+    {
+        return $this->hasMany(Score::class);
+    }
 }

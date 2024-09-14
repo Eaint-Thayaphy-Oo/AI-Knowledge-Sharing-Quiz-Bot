@@ -61,7 +61,7 @@ export const CategoryHome = () => {
     if (res) {
       console.log(res);
     }
-    navigate(`/quiz?category_id=${categoryId}`);
+    navigate(`/quiz?category_id=${categoryId}&game_room_id=${roomId}`);
   };
 
   return (

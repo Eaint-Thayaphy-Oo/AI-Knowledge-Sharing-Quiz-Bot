@@ -20,4 +20,9 @@ class GameRoom extends Model
     {
         return $this->belongsToMany(User::class, 'game_room_user', 'room_id', 'user_id');
     }
+
+    public function scores()
+    {
+        return $this->hasMany(Score::class);
+    }
 }
