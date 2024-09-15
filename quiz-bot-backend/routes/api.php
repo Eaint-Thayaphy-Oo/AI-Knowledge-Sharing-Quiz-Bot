@@ -21,6 +21,7 @@ Route::middleware('auth:api')->group(function () {
     Route::patch('update-room-category/{room_id}/{category_id}', [GameController::class, 'updateRoomCategory']);
     Route::post('save-score', [GameController::class, 'saveScore'])->middleware('auth:api');
     Route::get('/latest-scores', [GameController::class, 'getScores'])->middleware('auth:api');
+    Route::get('/scores-by-level', [GameController::class, 'getScoresByLevels']);
     Route::get('/users/scores', [GameController::class, 'getAllUsersScores']);
     Route::post('/next-level', [GameController::class, 'nextLevel']);
     Route::middleware('auth:api')->get('/current-user', [GameController::class, 'getCurrentUser']);

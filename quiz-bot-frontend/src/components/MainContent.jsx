@@ -3,6 +3,7 @@ import CategoryPage from "./CategoryPage";
 import QuestionPage from "./QuestionPage";
 import UsersPage from "./UsersPage";
 import ChangePasswordPage from "./ChangePasswordPage";
+import ScoresPage from "./ScoresPage";
 
 const MainContent = ({
   selectedMenuItem,
@@ -30,7 +31,7 @@ const MainContent = ({
           <QuestionPage questions={questions} fetchQuestions={fetchQuestions} />
         );
       case "Score":
-        return <div>Your Score</div>;
+        return <ScoresPage />;
       case "Change Password":
         return <ChangePasswordPage />;
       case "Settings":

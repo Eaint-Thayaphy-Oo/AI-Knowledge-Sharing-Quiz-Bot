@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 export const WinningScreenHome = ({ userId }) => {
   const [userScores, setUserScores] = useState([]);
@@ -75,18 +75,22 @@ export const WinningScreenHome = ({ userId }) => {
       <div className="p-12 bg-white w-8/12 rounded-lg mt-24">
         {renderUserScores()} {/* Render the scores for each user */}
       </div>
-      <Button
-        variant="outline"
-        className="w-48 p-8 font-semibold text-2xl rounded-full mt-14 bg-[#59F8E8]"
-      >
-        Play Again
-      </Button>
-      <Button
-        variant="outline"
-        className="w-32 p-5 font-semibold text-2xl rounded-full mt-5 bg-[#59F8E8]"
-      >
-        Quit
-      </Button>
+      {/* <Link to="/quiz">
+        <Button
+          variant="outline"
+          className="w-48 p-8 font-semibold text-2xl rounded-full mt-14 bg-[#59F8E8]"
+        >
+          Play Again
+        </Button>
+      </Link> */}
+      <Link to="/">
+        <Button
+          variant="outline"
+          className="w-32 p-5 font-semibold text-2xl rounded-full mt-5 bg-[#59F8E8]"
+        >
+          Quit
+        </Button>
+      </Link>
     </div>
   );
 };

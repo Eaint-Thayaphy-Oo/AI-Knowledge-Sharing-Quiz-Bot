@@ -157,15 +157,15 @@ class GameController extends Controller
         return response()->json($scores);
     }
 
-    public function getAllUsersScores()
-    {
-        $scores = DB::table('scores')
-            ->join('users', 'scores.user_id', '=', 'users.id')
-            ->select('users.name', 'users.email', 'scores.level', 'scores.score')
-            ->get();
+    // public function getAllUsersScores()
+    // {
+    //     $scores = DB::table('scores')
+    //         ->join('users', 'scores.user_id', '=', 'users.id')
+    //         ->select('users.name', 'users.email', 'scores.level', 'scores.score')
+    //         ->get();
 
-        return response()->json($scores);
-    }
+    //     return response()->json($scores);
+    // }
 
     public function getCurrentUser(Request $request)
     {
@@ -177,6 +177,26 @@ class GameController extends Controller
         $scores = Score::where('game_room_id', $game_room_id)
             ->where('category_id', $category_id)
             ->orderBy('level')
+            ->get();
+
+        return response()->json($scores);
+    }
+
+    public function getAllUsersScores()
+    {
+        $scores = DB::table('scores')
+            ->join('users', 'scores.user_id', '=', 'users.id')
+            ->select(
+                'scores.id',
+                'scores.game_room_id',
+                'scores.category_id',
+                'scores.level',
+                'scores.score',
+                'scores.created_at',
+                'scores.updated_at',
+                'users.name as username'
+            )
+            ->orderBy('scores.created_at', 'desc') // Order by created_at if needed
             ->get();
 
         return response()->json($scores);
